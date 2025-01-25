@@ -35,15 +35,16 @@ cout << "section a: "<<endl;
     int integer;
     int j=0;
     int seqProd =1;
-    cout << "Please enter a non-empty sequence of positive integers, each one in a separate line. End your sequence by typing -1:" << endl;
+    cout << "Please enter a non-empty sequence of positive integers, /n"
+    << "each one in a separate line. End your sequence by typing -1:" << endl;
     while (integer!=-1){
         cin >> integer;
         seqProd = seqProd*integer;
         ++j;
     }
-
+    seqProd = seqProd *-1;
     double powerB = 1/((double)j-1);
-cout << "product: " << seqProd <<endl;
+
     double resultB = pow(seqProd, powerB);
 
     cout  <<"The geometric mean is: " << resultB << endl;
