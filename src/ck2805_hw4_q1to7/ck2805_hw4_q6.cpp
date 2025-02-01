@@ -11,12 +11,12 @@ int main(){
     if (num%2==0){
         counting =num/2;
 
-        for (int i = 1; i <counting; i++) {
+        for (int i = 1; i <=counting; i++) {
             int even = i*2;
             cout << even <<endl;
         }
     }else{
-      counting =((num+1)/2);
+      counting =(num/2);
 
         for (int j = 0; j <counting; j++) {
             int odd = (j*2)+1;
