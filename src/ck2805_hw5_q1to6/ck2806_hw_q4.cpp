@@ -33,13 +33,13 @@ int main(){
 
 void divisors(int num){
     int div;
-    for (int i=1;i<num;i++){
+    for (int i=1;i<=num/2;i++){
         if(num%i==0){
             div=i;
             cout<< div << " ";
         };
 
     }
-    cout<<endl;
+    cout<<num<<endl;
 
 }

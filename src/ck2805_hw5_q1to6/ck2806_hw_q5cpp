@@ -1,7 +1,42 @@
 #include <iostream>
 using namespace std;
 
+void analyseDividiors(int num, int& outCountDivs, int& outSumDivs){
+    int num;
+    int num2;
+
+    cout << "enter a postive integer:" << endl;
+    cin>>num;
+
+    int div;
+    for (int i=1;i<=num/2;i++){
+        if(num%i==0){
+            div=i;
+            cout<< div << " ";
+        };
+
+    }
+    cout<<endl;
+
+}
+
 int main(){
+
+    int num;
+    int num2;
+
+    cout << "enter a postive integer:" << endl;
+    cin>>num;
+
+    int div;
+    for (int i=1;i<=num/2;i++){
+        if(num%i==0){
+            div=i;
+            cout<< div << " ";
+        };
+
+    }
+    cout<<endl;
 
 
     return 0;
