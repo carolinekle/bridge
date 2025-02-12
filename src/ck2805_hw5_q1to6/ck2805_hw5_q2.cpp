@@ -1,47 +1,38 @@
 #include <iostream>
 using namespace std;
 
-//NOT DONE
-//come back to a
+//figure out why
 void printShiftedTriangle(int n, int m, char symbol){
-char space =' ';
 
-for(int i=0; i<=n; i++){
-    for(int k = 0;k<n-i;k++){
-        cout<<space;
+    for (int i = 1; i <= n; i++) {
+        int spaces = m + (n - i);   
+        for (int k = 0; k < spaces; k++) {
+            cout << ' ';  
+        }
+        for (int j = 0; j < (2 * i - 1); j++) {  
+            cout << symbol; 
+        }
+        cout << endl;
     }
-
-    for(int j=0; j<i; j++){
-        
-        cout<<symbol;
-    }
-    cout<<endl;
-}
-
 }
 
 void printPineTree(int n, char symbol){
 
-/*  
-char space =' ';
-
-    for(int l=1;l<=n;l++){
-
-        for(int i =1; i<=n;i++){
-
-
-            for(int k=m;k<=n+m;k++ ){
-                cout<<space;
+    for (int l = 1; l <= n; l++) {  
+        int width = 2 * l - 1;      
+        
+        for (int i = 1; i <= width; i += 2) {  
+            int spaces = (n * 2 - 1 - i) / 2;
+            
+            for (int k = 0; k < spaces; k++) {  
+                cout << " "; 
             }
-            for(int j=1; j<=i;j++){
-                cout<<symbol;
+            for (int j = 0; j < i; j++) {
+                cout << symbol;
             }
-            cout<<endl;
+            cout << endl;
         }
-
     }
- */
-
 }
 
 int main(){
@@ -68,7 +59,6 @@ int main(){
  
 
     printPineTree(pineNum, pineSymbol);
-
 
 
     return 0; 
