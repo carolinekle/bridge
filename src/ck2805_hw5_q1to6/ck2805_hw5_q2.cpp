@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-//figure out why
 void printShiftedTriangle(int n, int m, char symbol){
 
     for (int i = 1; i <= n; i++) {
@@ -53,7 +52,7 @@ int main(){
     int pineNum;
     char pineSymbol;
 
-    cout<<"Enter number of triabgles and symbol you want for your pine tree: "<< endl;
+    cout<<"Enter number of triangles and symbol you want for your pine tree: "<< endl;
     cin>> pineNum;
     cin>>pineSymbol;
  

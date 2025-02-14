@@ -1,9 +1,8 @@
 #include <iostream>
 using namespace std;
 
-//NOT DONE
 
-void analyseDividiors(int num, int& outCountDivs, int& outSumDivs){
+void analyseDividors(int num, int& outCountDivs, int& outSumDivs){
     outCountDivs = 0;
     outSumDivs = 0;
 
@@ -23,7 +22,7 @@ bool isPerfect(int num){
     int outCountDivs=0;
     int outSumDivs =0;
 
-    analyseDividiors(num, outCountDivs,outSumDivs);
+    analyseDividors(num, outCountDivs,outSumDivs);
 
 
      if (outSumDivs == num){ 
@@ -50,7 +49,7 @@ int main(){
     cout << "enter a postive integer:" << endl;
     cin>>numA;
     if(isGreater(numA)){
-        analyseDividiors(numA, outCountDivs, outSumDivs);
+        analyseDividors(numA, outCountDivs, outSumDivs);
         cout<<"Sum:"<<outSumDivs<<endl;
         cout<<"Count:"<<outCountDivs<<endl;
     }else{
@@ -77,28 +76,32 @@ int main(){
     
     cout << "enter a postive integer:" << endl;
     cin>>numC;
-    if(isGreater(numC)){
-        int outSumDivs, outCountDivs;
-        analyseDividiors(numC, outCountDivs, outSumDivs);
-        
+    if (!isGreater(numC)) {
+        cout << "enter an integer greater than or equal to 2." << endl;
+        return 1;
+    }
 
- /*        for (int i = 2; i <= numC; i++) {
-            if (isPerfect(i)) {
-                cout << i << " ";
+    cout << "perfect numbers between 2 and " << numC << ": ";
+    for (int i = 2; i <= numC; i++) {
+        if (isPerfect(i)) {
+            cout << i << " ";
+        }
+    }
+    cout << endl;
+
+    cout << "amicable pairs between 2 and " << numC << ": " << endl;
+    for (int i = 2; i <= numC; i++) {
+        int sumA, countA;
+        analyseDividors(i, countA, sumA);
+        if (sumA > i && sumA <= numC) {  
+            int sumB, countB;
+            analyseDividors(sumA, countB, sumB);
+            if (sumB == i) {
+                cout << i << " and " << sumA << endl;
             }
         }
-        for (int i=2;i<=numC;i++){
-            if (isPerfect(i)){
-                int sumA=i;
-            }
-        } */
-        cout << endl;
+    }
 
-    }else{
-        cout<<"enter an integer great than 2"<<endl;
-        return 1;
-    }  
-    
 
 
 

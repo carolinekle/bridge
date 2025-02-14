@@ -15,15 +15,24 @@ int main (){
     return 0;
 }
 
-int fibonacci(int num){
-    int fib=1;
-    int fib2=0;
+int fibonacci(int n){
+    int fib;
+    int a=1;
+    int b=1;
+    int temp;
 
-    for(int i=1; i<=num; i++){
-        fib = fib2+fib;
-        fib2=fib-fib2;
+    if(n==1||n==2){
+        fib=1;
+        return fib;
+    }
 
+    for(int i=3; i<=n; i++){
+        temp = a + b;
+        a = b;
+        b = temp;
+        
     } 
+    fib=b;
 
     return fib;
 }

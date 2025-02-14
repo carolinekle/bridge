@@ -1,4 +1,5 @@
 #include <iostream>
+#include<cmath>
 using namespace std;
 
 void divisors(int num);
@@ -33,7 +34,8 @@ int main(){
 
 void divisors(int num){
     int div;
-    for (int i=1;i<=num/2;i++){
+    int sqrtNum = sqrt(num);
+    for (int i=1;i<=sqrtNum;i++){
         if(num%i==0){
             div=i;
             cout<< div << " ";

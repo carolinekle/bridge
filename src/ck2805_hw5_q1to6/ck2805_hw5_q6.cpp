@@ -3,26 +3,27 @@ using namespace std;
 
 double eApprox(int n){
     double e=1;
-    for (int i=1; i<=n; i++){
-        cout<<i<<endl;
-        e=1/(e*i);
+    double factorial =1;
+
+    for (int i = 1; i <= n; i++) {
+        factorial *= i;
+        e += 1.0 / factorial; 
     }
-    e=1+e;
-    
+
     return e;
-    
 }
 
 int main(){
 
-    double num;
+    double n;
+    cout.precision(30);
 
     cout<<"enter amount for e: "<<endl;
-    cin>> num;
+    cin>> n;
 
-    double newNum = eApprox(num);
-    cout<<newNum<<endl;
-
+    for (int n = 1; n <= 15; n++) {
+        cout<<"n = "<<n<<'\t'<<eApprox(n)<<endl;
+        }
     return 0;
 
 }
