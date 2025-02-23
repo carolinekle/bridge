@@ -1,37 +1,31 @@
 #include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
 
 
 int main(){
-    int num;
-    char space = ' ';
-    char hash = '#';
-    char dollar = '$';
+    
+    string str = "";
+    vector<string> words;
+    string space = " ";
+    string word = "";
+    int count;
+ 
+    cout<<"insert a string"<<endl;
+    cin>>str;
 
-    cout << "enter a number "<<endl;
 
-    cin>> num;
-    int times= num/2;
-
-//rows
-    for(int i=0; i<num; i++){
-
-        for(int j=0; j<num; j++){
-       
-        if(j==1 || j==num-1 || i==0 || i==num-1){
-            cout<<hash; 
+    for(int i=0; i<=str.length()-1;i++){
+        if (str[i] == space[0]) { 
+            word = str.substr(i + 1);
+            cout<<"word:"<<word<<endl;
+            words.insert(words.begin(), word);
+            count++;
         }
-        else if(i==j || i+j == num-1){
-            cout << dollar;
-        }
-
-        else{
-            cout<<space;
-        }
-
-
     }
 
-        cout<<endl;
-    }
+    cout<< "count: " << count<<endl;
+
+    return 0; 
 }

@@ -12,6 +12,7 @@ int main(){
     string word = "";
     int count=0;
     int start = 0;
+
  
     cout<<"insert a string"<<endl;
     getline(cin, str);
@@ -28,24 +29,40 @@ int main(){
         }
     }
 
+    int letters[26]={0};
+
+    for(int i=0; i< str.length(); i++){
+       char letter = str[i];
+       if (letter >= 'a'&& letter<='z'||letter >= 'A'&& letter<='Z'){
+        if(letter >= 'A'&& letter<='Z'){
+            
+            letter=letter+32;
+            letters[letter -'a']++;
+        }else{
+            letters[letter -'a']++;
+        }
+
+       }
+
+    }
 
 
-    for (int i = 0; i < words.size(); ++i) {
-        cout << words[i] << " "<<endl;
-      }
+    cout<<count<<" words."<<endl;
+    char alpha = 'a';
+    for (int i = 0; i < 26; i++) {
+
+        if (letters[i]==0){
+            alpha++;
+            continue;
+            
+        }
+
+            cout<<alpha<<"\t"<<letters[i]<<endl;
+            alpha++;
+        
+		
+	}
       
 
     return 0; 
 }
-
-/*for(int i=0; i<=str.length()+1;i++){
-    if (str[i] == space[0]) { 
-        word = str.substr(index, i);
-        rest = str.substr(i, str.length());
-        cout<<"word:"<<word<<endl;
-        words.insert(words.end(), word);
-        str=rest;
-        index=i;
-        count++;
-    }
-}*/
