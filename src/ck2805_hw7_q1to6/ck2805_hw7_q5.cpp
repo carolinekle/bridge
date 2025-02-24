@@ -2,44 +2,57 @@
 #include <vector>
 using namespace std;
 
+int* getPosNums1(int* arr, int arrSize, int& outPosArrSize){
+    int counter=0;
+    int index=0;
 
-
-//no vector --  maybe for loop?
-
-//vector
-int main2(vector<int> v, int search){
-    
-
-}
-
-int main(){
-    int num;
-    vector<int> numbers;
-
-    cout<<"Please enter a sequence of positive integers, each in a seperate line.\nEnd your input by typing -1."<<endl;
-    int index =0;
-    bool endInput;
-    while(endInput == false){
-        cin>>num;
-        if(num == -1){
-            endInput= true; 
-        }else{
-            numbers.insert(numbers.end(), num);
-            index++;
+    for(int i=0; i<=arrSize;i++){
+        if(arr[i]>0){
+            counter++;
         }
     }
-    int search;
-    cout<<"Please enter number you want to search: "<<endl;
-    cin>> search;
+    outPosArrSize= counter;
+    int *NewArr;
+    NewArr = new int[counter];
 
-    main2(numbers, search);
-    
-
-    for(int i =0; i<=index-1;i++){
-        cout<<numbers[i];
+    for(int i=0; i<=arrSize;i++){
+        if(arr[i]>0){
+            NewArr[index]=arr[i];
+            index++;
+            
+        }
     }
-    cout<<endl;
 
+
+    cout<<"new"<<endl;
+    for(int i=0; i<=counter;i++){
+        cout<<NewArr[i]<<" ";
+    }
+     cout<<endl;
+    
+    return NewArr;
+}
+
+
+int main(){
+    int arrSize;
+    int outPosArrSize;
+    cout<<"enter array Size:"<<endl;
+
+    cin>>arrSize;
+    int arr[arrSize];
+
+    cout<<"enter digits in array"<<endl;
+
+    for(int i=0; i<arrSize;i++){
+        cin>>arr[i];
+    }
+    int* posArr=(getPosNums1(arr, arrSize, outPosArrSize));
+    cout<<"pointer address "<<(getPosNums1(arr, arrSize, outPosArrSize));
+
+    for(int i=0; i<=*posArr-1;i++){
+        cout<<posArr[i];
+    } 
 
     return 0; 
 }

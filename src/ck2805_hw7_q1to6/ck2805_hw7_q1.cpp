@@ -54,9 +54,7 @@ int main(){
         if (letters[i]==0){
             alpha++;
             continue;
-            
         }
-
             cout<<alpha<<"\t"<<letters[i]<<endl;
             alpha++;
         
