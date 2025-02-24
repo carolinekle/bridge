@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+//swap not working?
 
 void oddsKeepEvensFlip(int arr[], int arrSize){
     int indexOO=0; int indexE=0;
@@ -21,11 +22,27 @@ void oddsKeepEvensFlip(int arr[], int arrSize){
         }
         cout<<endl;
 
-        cout<<"even"<<endl;
-        for(int i =0; i<=arrSize-1;i++){
-            cout<<evens[i];
+
+        for(int i =0; i<= indexE;i++){
+            if(evens[indexE]>evens[i]){
+                int temp =evens[i];
+                evens[i]=evens[indexE];
+                evens[indexE]= temp;
+            }
+            indexE--;
         }
-        cout<<endl;
+
+
+        int index =0;
+        for (int j = 0; j < indexOO; j++)
+            arr[index++] = odds[j];
+
+
+        for (int j = 0; j < indexE; j++)
+            arr[index++] = evens[j];
+
+delete odds;
+delete evens;
 
 }
 
@@ -46,7 +63,7 @@ int main(){
 
     //print
     for(int i =0; i<=arrSize-1;i++)
-        cout<<arr[i];
+        cout<<arr[i]<<", ";
     cout<<endl;
 
     return 0;

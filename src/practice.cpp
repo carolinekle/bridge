@@ -1,31 +1,12 @@
 #include <iostream>
-#include <string>
-#include <vector>
-using namespace std;
-
-
-int main(){
     
-    string str = "";
-    vector<string> words;
-    string space = " ";
-    string word = "";
-    int count;
- 
-    cout<<"insert a string"<<endl;
-    cin>>str;
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    int* ptr = arr;
 
-
-    for(int i=0; i<=str.length()-1;i++){
-        if (str[i] == space[0]) { 
-            word = str.substr(i + 1);
-            cout<<"word:"<<word<<endl;
-            words.insert(words.begin(), word);
-            count++;
-        }
+    for (int i = 0; i < 5; ++i) {
+        std::cout << "Element " << i << ": " << *(ptr + i) << std::endl;
     }
 
-    cout<< "count: " << count<<endl;
-
-    return 0; 
+    return 0;
 }
