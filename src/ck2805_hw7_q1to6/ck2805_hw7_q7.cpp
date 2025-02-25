@@ -11,9 +11,19 @@ int* findMissing(int arr[], int n, int& resArrSize){
             counter++;
         }
     }
+
+    
     resArrSize=counter;
     int *NewArr;
     NewArr = new int[counter];
+
+    for(int i =0; i< n; i++){
+        if(arr[i]!=i){
+            
+        }
+
+    }
+
 
     return NewArr;
 
