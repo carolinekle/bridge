@@ -1,82 +1,29 @@
 #include <iostream>
 using namespace std;
 
-int main(){
-    
-    int num;
-char space = ' ';
-char star = '*';
-
-    cout << "insert a positive integer: " << endl;
-    cin>> num;
-
-for (int i=0; i<= num; i++){
-
-    for (int j=0; j<i; j++){
-	        cout<<space;
-
+int maxZeroLength(int arr[], int size, int start){
+	if(start == size){
+        return 0;
+    }else{
+	for (int i=start; i<size;i++){
+        if(arr[i] != 0){
+            return start++;
+        }else{
+            return maxZeroLength(arr, size, start++);
+        }
     }
-
-
-	for (int k=0; k<num-i;k++){
-
-        cout << star;
-
-    }
-    cout << endl;
+}
 }
 
+int main(){
+
+int arr[]={0,0,1,0,0,0};
+int size =6;
+int start = 0;
+
+int result = maxZeroLength(arr, size, start);
+cout<< result<<endl;
 
 
 return 0;
 }
-
-/* 
-    cin>>num;
-    for(int i=0; i<=num; i++){
-        for(int j=0; j<i; j++){
-            cout<<" ";
-        }
-        for(int k = 0;k<num-i;k++){
-            cout<<star;
-        }
-
-        cout<<endl;
-    }
- */
-    //bottom right trianlge
-/*     for(int i=0; i<=num; i++){
-        for(int k = 0;k<num-i;k++){
-            cout<<" ";
-        }
-
-        for(int j=0; j<i; j++){
-            cout<<star;
-        }
-        cout<<endl;
-    } */
-
-//top left tringle
-/*
-    for(int i=num; i>0; i--){
-        cout << " ";
-        for(int j=0; j<i; j++){
-            cout<<star;
-        }
-        star++;
-        cout<<endl;
-    }
-*/
-
-/* 
-
-/bottome left triangle
-    for(int i =1; i<=num;i++){
-        for(int j=1; j<=i;j++){
-            cout<<star;
-        }
-        star++;
-        cout<<endl;
-    }
-
- */
