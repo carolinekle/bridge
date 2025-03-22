@@ -9,11 +9,11 @@ class Organism{
 
 };
 
-class Ant:Organism{
+class Ant:public Organism{
 
 };
 
-class Doodlebug:Organism{
+class Doodlebug:public Organism{
     public:
         int starve();
     private:
