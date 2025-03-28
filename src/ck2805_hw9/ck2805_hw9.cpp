@@ -94,15 +94,15 @@ void Ant::breed(Bug* world[20][20]){
 }
 
 class Doodlebug : public Bug {
-private:
-int noFood;
+    private:
+        int noFood;
 
-public:
-Doodlebug() : noFood(0) {}
-void move(Bug* world[20][20]) override;
-void breed (Bug* world[20][20]) override;
-bool eat(Bug* world[20][20]);
-void starve (Bug* world[20][20]);
+    public:
+        Doodlebug() : noFood(0) {}
+        void move(Bug* world[20][20]) override;
+        void breed (Bug* world[20][20]) override;
+        bool eat(Bug* world[20][20]);
+        void starve (Bug* world[20][20]);
 
 };
 
