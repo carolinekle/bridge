@@ -4,143 +4,193 @@
 
 using namespace std;
 
+class Sim;
+
 class Bug {
     private:
-        Sim* sim;
-    
+        int age;
+        int x, y;
     public:
+        Bug() : age(0) {}
         virtual ~Bug() {}
+        virtual void starve(Bug* world[20][20]) {}
         virtual void move(Bug* world[20][20])=0;
         virtual void breed(Bug* world[20][20])=0;
-        virtual int getSimTime();
-        virtual bool isStarved();
- 
+
+        void setPosition(int newX, int newY) { x = newX; y = newY; }
+        int getX() const { return x; }
+        int getY() const { return y; }
+        void incrementAge() { age++; }
+        int getAge() const { return age; }
 };
 
 void Bug::move(Bug* world[20][20]) {}
 void Bug::breed(Bug* world[20][20]) {}
-int Bug::getSimTime(){
-    return sim->getTime();
-}
-bool Bug::isStarved() { return false; }
+
 
 
 class Ant : virtual public Bug {
     private:
-        int timeSurvived=0;
-    
     public:
         Ant();
         ~Ant();
         void move(Bug* world[20][20]) override;
-        void breed (Bug* world[20][20])override;
-        //void timeSurvived ()override;
+        void breed (Bug* world[20][20])override;    
 };
 Ant::Ant() {}
 Ant::~Ant() {}
 
-void Ant:: move(Bug* world[20][20]){
+void Ant::move(Bug* world[20][20]) {
+    int x=getX();
+    int y =getY();
     int direction = rand() % 4;
-    int newX = -1, newY = -1;
+    int newX = x, newY = y;
 
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
-            if (world[i][j] == this) { // Find this doodlebug in the grid
-                if (direction == 0 && i > 0) newX = i - 1, newY = j;
-                if (direction == 1 && i < 19) newX = i + 1, newY = j;
-                if (direction == 2 && j > 0) newX = i, newY = j - 1;
-                if (direction == 3 && j < 19) newX = i, newY = j + 1;
+            if (world[i][j] == this) {
+                if (direction == 0 && x > 0) newX = x - 1; // up
+                if (direction == 1 && x < 19) newX = x + 1; // down
+                if (direction == 2 && y > 0) newY = y - 1; // left
+                if (direction == 3 && y < 19) newY = y + 1; // right
 
-                if (newX != -1 && world[newX][newY] == nullptr) {
+                if (world[newX][newY] == nullptr) {
                     world[newX][newY] = this;
-                    // HOW TO NOT EAT DODOELBUG 
+                    world[x][y] = nullptr;
+                    setPosition(newX, newY);
                 }
-                return; // Stop after moving
+
             }
         }
     }
 }
 
+
+
 void Ant::breed(Bug* world[20][20]){
-    int time = getSimTime();
-    //get time?
-    if(time!= 0 && timeSurvived%3==0){
+//get time?
+    if (this->getAge() % 3 == 0) {
         int direction = rand() % 4;
         int newX = -1, newY = -1;
+
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 if (world[i][j] == this) {
-                    int direction = rand() % 4;
-
-                    if (direction == 1 && i < 19) newX = i + 1, newY = j;
-                    if (direction == 2 && j > 0) newX = i, newY = j - 1;
-                    if (direction == 3 && j < 19) newX = i, newY = j + 1;
+                if (direction == 0 && i > 0) newX = i - 1, newY = j;
+                if (direction == 1 && i < 19) newX = i + 1, newY = j;
+                if (direction == 2 && j > 0) newX = i, newY = j - 1;
+                if (direction == 3 && j < 19) newX = i, newY = j + 1;
 
                     if (newX != -1 && world[newX][newY] == nullptr) {
-                    world[newX][newY] = new Doodlebug;
-                
-                    } 
+                            Ant* newAnt = new Ant();
+                            newAnt->setPosition(newX, newY);
+                            world[newX][newY] = newAnt;
+                        }
                     return;
+                    }
                 }
-            }
         }
     }
 }
 
 class Doodlebug : public Bug {
-    private:
-        int noFood; 
-        int timeSurvived =0;
+private:
+int noFood;
 
-    public:
-        void move(Bug* world[20][20]) override;
-        void breed (Bug* world[20][20]) override;
-        void starve (Bug* world[20][20]);
+public:
+Doodlebug() : noFood(0) {}
+void move(Bug* world[20][20]) override;
+void breed (Bug* world[20][20]) override;
+bool eat(Bug* world[20][20]);
+void starve (Bug* world[20][20]);
 
-}; 
+};
 
-void Doodlebug::move(Bug* world[20][20]){
+bool Doodlebug::eat(Bug* world[20][20]) {
+    int x=getX();
+    int y =getY();
     int direction = rand() % 4;
-    int newX = -1, newY = -1;
+    int newX = x, newY = y;
 
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
-            if (world[i][j] == this) { // find this doodlebug in the grid
+            if (world[i][j] == this) {
+            if (direction == 0 && x > 0) newX = x - 1; // up
+            if (direction == 1 && x < 19) newX = x + 1; // down
+            if (direction == 2 && y > 0) newY = y - 1; // left
+            if (direction == 3 && y < 19) newY = y + 1; // right
+
+                if (world[newX][newY] != nullptr && dynamic_cast<Ant*>(world[newX][newY])) {
+
+                delete world[newX][newY];
+                world[newX][newY] = dynamic_cast<Ant*>(world[newX][newY]);
+                world[x][y] = nullptr;
+                setPosition(newX, newY);
+                noFood = 0;
+                return true;
+                }
+            }
+        }
+    }
+
+    noFood++;
+    return false;
+}
+
+void Doodlebug::starve(Bug* world[20][20]) {
+    if (noFood >= 3) {
+        int x = getX();
+        int y = getY();
+        world[x][y] = nullptr;
+        delete this;
+    }
+}
+
+
+void Doodlebug::move(Bug* world[20][20]){
+    int x=getX();
+    int y =getY();
+    int direction = rand() % 4;
+    int newX = x, newY = y;
+
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            if (world[i][j] == this) {
+                if (direction == 0 && x > 0) newX = x - 1; // up
+                if (direction == 1 && x < 19) newX = x + 1; // down
+                if (direction == 2 && y > 0) newY = y - 1; // left
+                if (direction == 3 && y < 19) newY = y + 1; // right
+
+                if (world[newX][newY] == nullptr) {
+                    world[newX][newY] = this;
+                    world[x][y] = nullptr;
+                    setPosition(newX, newY);
+                }
+
+            }
+        }
+    }
+}
+
+void Doodlebug::breed(Bug* world[20][20]){
+    if (this->getAge() % 8 == 0) {
+        int direction = rand() % 4;
+        int newX = -1, newY = -1;
+
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            if (world[i][j] == this) {
+
                 if (direction == 0 && i > 0) newX = i - 1, newY = j;
                 if (direction == 1 && i < 19) newX = i + 1, newY = j;
                 if (direction == 2 && j > 0) newX = i, newY = j - 1;
                 if (direction == 3 && j < 19) newX = i, newY = j + 1;
 
                 if (newX != -1 && world[newX][newY] == nullptr) {
-                    world[newX][newY] = this;
-                    world[i][j] = nullptr;
-                    this->timeSurvived++;
-                }
-                return; // Stop after moving
-            }
-        }
-    }
-};
-
-void Doodlebug::breed(Bug* world[20][20]){
-    int time = getSimTime();
-    //get time?
-    if(time!= 0 && timeSurvived%8==0){
-        int direction = rand() % 4;
-        int newX = -1, newY = -1;
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                if (world[i][j] == this) {
-                    int direction = rand() % 4;
-
-                    if (direction == 1 && i < 19) newX = i + 1, newY = j;
-                    if (direction == 2 && j > 0) newX = i, newY = j - 1;
-                    if (direction == 3 && j < 19) newX = i, newY = j + 1;
-
-                    if (newX != -1 && world[newX][newY] == nullptr) {
-                    world[newX][newY] = new Doodlebug;
-                
-                    } 
+                        Ant* newAnt = new Ant();
+                        newAnt->setPosition(newX, newY);
+                        world[newX][newY] = newAnt;
+                    }
                     return;
                 }
             }
@@ -148,23 +198,10 @@ void Doodlebug::breed(Bug* world[20][20]){
     }
 }
 
-void Doodlebug:: starve(Bug* world[20][20]){
-    int time = getSimTime();
-    //get time?
-    if(time!= 0 && timeSurvived%3==0){
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                if (world[i][j] == this) {
-                    world[i][j]== nullptr;
-                }
-            }
-        }
-    }
-}
 
 class Sim {
     private:
-        Bug* world[20][20]; // array of bugs 
+        Bug* world[20][20]; // array of bugs
         int time=0;
 
     public:
@@ -176,27 +213,30 @@ class Sim {
         int getTime();
         void fillWorld(); // fill world with ants and doodlebugs
         void displayWorld(); // display the simulation
-        
 
 };
 
-// Constructor
+
 Sim::Sim() {
-    //time = 0;
     for (int i = 0; i < 20; i++) {
-        for(int j =0; j< 20; j++)
+        for (int j = 0; j < 20; j++) {
             world[i][j] = nullptr;
+        }
     }
 }
 
-// Destructor
+
 Sim::~Sim() {
     for (int i = 0; i < 20; i++) {
-        for(int j =0; j< 20; j++)
-            delete world[i][j];
-        
+        for (int j = 0; j < 20; j++) {
+            if (world[i][j] != nullptr) {
+                delete world[i][j];
+                world[i][j] = nullptr;
+            }
+        }
     }
 }
+
 
 void Sim::setTime(int time){
     this->time=time;
@@ -207,8 +247,17 @@ int Sim::getTime(){
 }
 
 void Sim::fillWorld() {
+
     int antsPlaced = 0, doodles = 0;
-    
+
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            if (world[i][j] != nullptr) {
+                delete world[i][j];
+                world[i][j] = nullptr;
+            }
+        }
+    }
 
     for (int i = 0; i < 20; i++) {
         for(int j=0; j<20;j++){
@@ -221,46 +270,54 @@ void Sim::fillWorld() {
         int x = rand() % 20;
         int y = rand() % 20;
 
-        if (world[x][y] == nullptr) { 
-            world[x][y] = new Ant(); 
-            antsPlaced++;
-        }
+        if (world[x][y] == nullptr) {
+                world[x][y] = new Ant();
+                world[x][y]->setPosition(x,y);
+                antsPlaced++;
+            }
     }
 
     while (doodles < 5) {
         int x = rand() % 20;
         int y = rand() % 20;
-        if (world[x][y] == nullptr) { 
-            world[x][y] = new Doodlebug(); 
-            doodles++;
+            if (world[x][y] == nullptr) {
+                world[x][y] = new Doodlebug();
+                world[x][y]->setPosition(x,y);
+                doodles++;
+            }
+        }
+}
+
+void Sim::updateWorld() {
+
+// move doodlebugs
+for (int i = 0; i < 20; i++) {
+    for (int j = 0; j < 20; j++) {
+        if (world[i][j] != nullptr && dynamic_cast<Doodlebug*>(world[i][j])) {
+            world[i][j]->incrementAge();
+            world[i][j]->starve(world);
+            world[i][j]->breed(world);
+            world[i][j]->move(world);
+
         }
     }
 }
 
-void Sim::updateWorld(){
-    // move dooodle bugs first and they eat 
+// move ants
+for (int i = 0; i < 20; i++) {
+    for (int j = 0; j < 20; j++) {
+        if (world[i][j] != nullptr && dynamic_cast<Ant*>(world[i][j])) {
+            world[i][j]->incrementAge();
+            world[i][j]->breed(world);
+            world[i][j]->move(world);
 
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            if (world[i][j] != nullptr && typeid(*world[i][j]) == typeid(Doodlebug)) {
-                world[i][j]->move(world);
             }
         }
     }
 
-    //then move ants
-
-
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            if (world[i][j] != nullptr && typeid(*world[i][j]) == typeid(Ant)) {
-                world[i][j]->move(world);
-            }
-        }
-    }
     time++;
+}
 
-};
 
 void Sim::displayWorld() {
     cout << endl;
@@ -269,31 +326,18 @@ void Sim::displayWorld() {
 
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
-
-    
             if (world[i][j] == nullptr) {
                 cout << "- ";
-            } else if (typeid(*world[i][j]) == typeid(Ant)) {
+            } else if (dynamic_cast<Ant*>(world[i][j])) {
                 cout << "o ";
-            } else if (typeid(*world[i][j]) == typeid(Doodlebug)) {
+            } else if (dynamic_cast<Doodlebug*>(world[i][j])) {
                 cout << "X ";
-            } 
+            }
         }
         cout << endl;
     }
-    cout << endl;
-    cout << "Press ENTER to continue." << endl;
-    char temp;
-    cin.get(temp);
-
-    if (temp =='\n'){
-        updateWorld();
-        displayWorld();
-    }else{
-        cout<<temp<<endl;
-    }
-
 }
+
 
 
 
@@ -301,9 +345,17 @@ int main() {
     srand(time(0));
 
     Sim sim;
-
     sim.fillWorld();
-    sim.displayWorld();
-   
+
+    for (int step = 0; step < 50; step++) {
+        sim.displayWorld();
+        cout << "Press ENTER to continue." << endl;
+
+        string input;
+        getline(cin, input);
+
+        sim.updateWorld();
+    }
+
     return 0;
 }
