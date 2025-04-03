@@ -37,23 +37,6 @@ class LinkedList {
 
 
 };
-/* void LinkedList::saveToFile(const string& filename) {
-    ofstream outFile(filename);
-    if (!outFile) {
-        cerr << "Error opening output file.\n";
-        return;
-    }
-
-    Node* temp = head;
-    while (temp) {
-        if (temp->paid >= 0) {
-            outFile<<temp->name<<" "<<temp->owed<<" "<<temp->name<<endl;
-        }
-        temp = temp->next;
-    }
-
-    outFile.close();
-} */
 
 int LinkedList::getSize(Node* head){
     int count = 0;
