@@ -10,6 +10,7 @@ You can use the constants RED and BLACK, instead of the ints 0 and 1, when appro
 #include <math.h> // for asserting height
 #include <queue>
 #include <cassert>
+
 using namespace std;
 
 #define RED 0
@@ -130,6 +131,27 @@ void RBT<T>::singleCR(RBTNode<T> *&point) {
     RBTNode<T> *grandparent = point;
     RBTNode<T> *parent = point->left;
     // TODO: ADD ROTATION CODE HERE
+
+    if (parent->right != nullptr) {
+        parent->right->parent = grandparent;
+    }
+    grandparent->left = parent->right;
+    parent->parent = grandparent->parent;
+
+    if ((grandparent->parent) == nullptr){
+        root = parent;
+    }else if (grandparent->parent->left == grandparent){
+        grandparent->parent->left = parent;
+    }
+    else{
+        grandparent->parent->right = parent;
+    }
+
+    parent->right = grandparent;
+    grandparent->parent = parent;
+    
+    swapColor(parent);
+    swapColor(grandparent);
 }
 
 template <class T>
@@ -137,6 +159,31 @@ void RBT<T>::singleCCR(RBTNode<T> *&point) {
     RBTNode<T> *grandparent = point;
     RBTNode<T> *parent = point->right;
     // TODO: ADD ROTATION CODE HERE
+
+    
+
+    if (parent->left != nullptr) {
+        parent->left->parent = grandparent;
+    }
+    grandparent->right = parent->left;
+    
+    parent->parent = grandparent->parent;
+
+    if ((grandparent->parent) == nullptr){
+        root = parent;
+    }
+    else if (grandparent->parent->right == grandparent){
+        grandparent->parent->right = parent;
+    }
+    else{
+        grandparent->parent->left = parent;
+    }
+    
+    parent->left = grandparent;
+    grandparent->parent = parent;
+    
+    swapColor(parent);
+    swapColor(grandparent);
 }
 
 template <class T>
@@ -147,7 +194,62 @@ void RBT<T>::insert(const T &toInsert, RBTNode<T> *&point, RBTNode<T> *parent) {
         point->parent = parent;
 
         RBTNode<T> *curr_node = point; // curr_node will be set appropriately when walking up the tree
+        
         // TODO: ADD RBT RULES HERE
+
+        if (parent == nullptr) {
+            point->color =  BLACK;
+            return;
+        }
+        
+        if (toInsert < parent->data){
+            parent->left = curr_node;
+        }else{
+            parent->right = curr_node;
+        }
+        
+        //if parent is root, just ensure that the root is black and return.
+        if (parent->parent == nullptr) {
+            parent->color = BLACK;
+            return;
+        }
+        
+        while (getColor(curr_node->parent) == RED) {
+            //going down left path.
+            if (curr_node->parent == curr_node->parent->parent->left) {
+                RBTNode<T> *uncle = curr_node->parent->parent->right;
+                if (getColor(uncle) == RED) {
+                    swapColor(curr_node->parent);
+                    swapColor(uncle);
+                    swapColor(curr_node->parent->parent);
+                    curr_node = curr_node->parent->parent;
+                }
+
+                else if (curr_node == curr_node->parent->left) {
+                    curr_node = curr_node->parent->parent;
+                    singleCR(curr_node);
+                }else {
+                    curr_node = curr_node->parent->parent;
+                    doubleCR(curr_node);
+                }
+            }
+            else {
+                RBTNode<T> *uncle = curr_node->parent->parent->left;
+                if (getColor(uncle) == RED) {
+                    swapColor(curr_node->parent);
+                    swapColor(uncle);
+                    swapColor(curr_node->parent->parent);
+                    curr_node = curr_node->parent->parent;
+                }else if (curr_node == curr_node->parent->right) {
+                    curr_node = curr_node->parent->parent;
+                    singleCCR(curr_node);
+                }else{
+                    curr_node = curr_node->parent->parent;
+                    doubleCCR(curr_node);
+                }
+            }
+            root->color = BLACK;
+        }
     } else if (toInsert < point->data) { // recurse down the tree to left to find correct leaf location
         insert(toInsert, point->left, point);
     } else { // recurse down the tree to right to find correct leaf location
