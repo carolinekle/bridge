@@ -208,14 +208,12 @@ void RBT<T>::insert(const T &toInsert, RBTNode<T> *&point, RBTNode<T> *parent) {
             parent->right = curr_node;
         }
         
-        //if parent is root, just ensure that the root is black and return.
         if (parent->parent == nullptr) {
             parent->color = BLACK;
             return;
         }
         
         while (getColor(curr_node->parent) == RED) {
-            //going down left path.
             if (curr_node->parent == curr_node->parent->parent->left) {
                 RBTNode<T> *uncle = curr_node->parent->parent->right;
                 if (getColor(uncle) == RED) {
